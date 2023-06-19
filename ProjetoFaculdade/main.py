@@ -315,9 +315,8 @@ def menu_principal():
     print('[ 1 ] Menu Pessoa')
     print('[ 2 ] Menu Livros')
     print('[ 3 ] Empréstimos')
-    print('[ 4 ] Devoluções')
-    print('[ 5 ] Relatórios')
-    print('[ 6 ] Encerrar/Sair')
+    print('[ 4 ] Relatórios')
+    print('[ 5 ] Encerrar/Sair')
     opcao = int(input('Opção: '))
     if opcao == 1:
       exibir_menu_pessoa()
@@ -407,16 +406,13 @@ def menu_principal():
             print(f"Hora de devolução: {d['Hora de devolução']}")
             print('---')
       elif opcao_relatorio == 3:
-        break
+        continue
       else:
         print('Opção inválida!')
     elif opcao == 5:
-      break
-    elif opcao == 6:
       print('Saindo...')
       break
     else:
       print('Opção inválida!')
-
 
 menu_principal()
