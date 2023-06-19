@@ -350,7 +350,7 @@ def menu_principal():
       elif opcao_pessoa == 6:
         consulta_pessoa()
       elif opcao_pessoa == 7:
-        break
+        continue
       else:
         print('Opção inválida!')
     elif opcao == 2:
