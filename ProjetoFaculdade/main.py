@@ -370,7 +370,7 @@ def menu_principal():
       elif opcao_livros == 6:
         consulta_livros()
       elif opcao_livros == 7:
-        break
+        continue
       else:
         print('Opção inválida!')
     elif opcao == 3:
