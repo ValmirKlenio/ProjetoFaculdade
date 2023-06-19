@@ -372,7 +372,7 @@ def menu_principal():
       elif opcao_emprestimo == 4:
         listar_devolucoes()
       elif opcao_emprestimo == 5:
-        break
+        continue
       else:
         print('Opção inválida!')
     elif opcao == 4:
