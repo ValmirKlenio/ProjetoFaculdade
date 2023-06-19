@@ -1,11 +1,12 @@
 from datetime import date, datetime
 
+# Listas para armazenar as pessoas, livros, empréstimos e devoluções
 pessoas = []
 livros = []
 emprestimos = []
 devolucoes = []
 
-
+# Função para exibir o menu de opções relacionadas a pessoas
 def exibir_menu_pessoa():
   print('''Escolha uma opção:
     [ 1 ] Cadastrar uma pessoa
@@ -16,10 +17,11 @@ def exibir_menu_pessoa():
     [ 6 ] Consultar pessoa
     [ 7 ] Sair/Encerrar''')
 
-
+# Função para cadastrar uma pessoa
 def cadastro_pessoa():
   nome = input('Nome: ')
   cpf = int(input('CPF: '))
+  # Verificar se o CPF já está cadastrado
   if any(p['cpf'] == cpf for p in pessoas):
     print('CPF já cadastrado!')
     return
@@ -27,6 +29,7 @@ def cadastro_pessoa():
   pessoas.append({'nome': nome, 'cpf': cpf, 'email': email})
   print('Pessoa cadastrada com sucesso!')
 
+# Função para listar as pessoas cadastradas
 def listar_pessoa():
   if len(pessoas) == 0:
     print('Nenhuma pessoa cadastrada.')
@@ -34,6 +37,7 @@ def listar_pessoa():
     for p in pessoas:
       print(p)
 
+# Função para buscar dados de uma pessoa
 def buscar_pessoa():
   cpf = int(input('CPF: '))
   for p in pessoas:
@@ -42,7 +46,7 @@ def buscar_pessoa():
       return
   print(f'Pessoa com CPF {cpf} não encontrada')
 
-
+# Função para remover uma pessoa
 def remover_pessoa():
   cpf = int(input('CPF: '))
   for p in pessoas:
@@ -52,7 +56,7 @@ def remover_pessoa():
       return
   print(f'Pessoa com CPF {cpf} não encontrada.')
 
-
+# Função para alterar dados de uma pessoa
 def alterar_pessoa():
   cpf = int(input('Digite o CPF que deseja alterar: '))
   for p in pessoas:
@@ -71,7 +75,7 @@ def alterar_pessoa():
       return
   print('Pessoa não encontrada.')
 
-
+# Função para consultar uma pessoa
 def consulta_pessoa():
   print('''Escolha um tipo de consulta:
     [ 1 ] Consultar pelo nome
@@ -102,7 +106,7 @@ def consulta_pessoa():
   else:
     print('Opção inválida.')
 
-
+# Função para exibir o menu de opções relacionadas a livros
 def exibir_menu_livros():
   print('''Escolha uma opção:
     [ 1 ] Cadastrar um livro
@@ -113,9 +117,10 @@ def exibir_menu_livros():
     [ 6 ] Consultar livro
     [ 7 ] Encerrar/Sair''')
 
-
+# Função para cadastrar um livro
 def cadastro_livros():
   id_livro = int(input('Id: '))
+  # Verificar se o livro já está cadastrado
   if any(l['Id do Livro'] == id_livro for l in livros):
     print('Livro já cadastrado!')
     return
@@ -125,6 +130,7 @@ def cadastro_livros():
   editora = input('Editora: ')
   ano_publicacao = int(input('Ano de publicação: '))
   edicao = int(input('Edição: '))
+  # Adicionar o livro à lista de livros
   livros.append({
     'Id do Livro': id_livro,
     'titulo': titulo,
@@ -136,6 +142,7 @@ def cadastro_livros():
   })
   print('Livro cadastrado com sucesso!!')
 
+# Função para listar os livros cadastrados
 def listar_livros():
   if len(livros) == 0:
     print('Nenhum livro cadastrado.')
@@ -143,6 +150,7 @@ def listar_livros():
     for l in livros:
       print(l)
 
+# Função para buscar dados de um livro
 def buscar_livros():
   id_livro = int(input('Id: '))
   for l in livros:
@@ -151,7 +159,7 @@ def buscar_livros():
       return
   print(f'Livro com id {id_livro} não foi encontrado')
 
-
+# Função para remover um livro
 def remover_livro():
   id_livro = int(input('Id do Livro: '))
   for l in livros:
@@ -161,7 +169,7 @@ def remover_livro():
       return
   print(f'Livro com id {id_livro} não encontrado.')
 
-
+# Função para alterar dados de um livro
 def alterar_livros():
   id_livro = int(input('Digite o Id do livro que deseja alterar: '))
   for l in livros:
@@ -179,6 +187,7 @@ def alterar_livros():
         editora = str(input('Nova editora: '))
         ano_publicacao = int(input('Novo ano de publicação: '))
         edicao = int(input('Nova edição: '))
+        # Adicionar o livro com os novos dados à lista de livros
         livros.append({
           'Id do Livro': id_livro,
           'titulo': titulo,
@@ -192,7 +201,7 @@ def alterar_livros():
       return
   print('Livro não encontrado.')
 
-
+# Função para consultar um livro
 def consulta_livros():
   print('''Escolha um tipo de consulta:
     [ 1 ] Consultar pelo Id do Livro
@@ -242,19 +251,22 @@ def consulta_livros():
   else:
     print('Opção inválida.')
 
-
+# Função para realizar um empréstimo de livro
 def emprestimo():
   id_livro = int(input('Id: '))
+  # Verificar se o livro já está emprestado
   for e in emprestimos:
     if e['Id do livro'] == id_livro:
       print('Livro já emprestado!')
       return
+    # Verificar se o livro existe na lista de livros
   for l in livros:
     if l['Id do Livro'] == id_livro:
       pessoa = input('Nome da pessoa: ')
       titulo = l['titulo']
       data = date.today()
       hora = datetime.now().time()
+      # Adicionar o empréstimo à lista de empréstimos
       emprestimos.append({
         'Id do livro': id_livro,
         'Título': titulo,
@@ -266,19 +278,22 @@ def emprestimo():
       return
   print(f'Livro com id {id_livro} não encontrado.')
 
-
+# Função para realizar uma devolução de livro
 def devolucao():
   id_livro = int(input('Id: '))
+  # Verificar se o livro já foi devolvido
   for d in devolucoes:
     if d['Id do livro'] == id_livro:
       print('Livro já devolvido!')
       return
+    # Verificar se o livro está emprestado
   for e in emprestimos:
     if e['Id do livro'] == id_livro:
       pessoa = e['Pessoa']
       titulo = e['Título']
       data = date.today()
       hora = datetime.now().time()
+      # Adicionar a devolução à lista de devoluções
       devolucoes.append({
         'Id do livro': id_livro,
         'Título': titulo,
@@ -291,7 +306,7 @@ def devolucao():
       return
   print(f'Livro com id {id_livro} não encontrado.')
 
-
+# Função para listar os empréstimos realizados
 def listar_emprestimos():
   if len(emprestimos) == 0:
     print('Nenhum livro emprestado.')
@@ -299,7 +314,7 @@ def listar_emprestimos():
     for e in emprestimos:
       print(e)
 
-
+# Função para listar as devoluções realizadas
 def listar_devolucoes():
   if len(devolucoes) == 0:
     print('Nenhum livro devolvido.')
@@ -307,7 +322,7 @@ def listar_devolucoes():
     for d in devolucoes:
       print(d)
 
-
+# Função para exibir o menu principal
 def menu_principal():
   print('Bem-vindo(a) à Biblioteca!')
   while True:
@@ -319,6 +334,7 @@ def menu_principal():
     print('[ 5 ] Encerrar/Sair')
     opcao = int(input('Opção: '))
     if opcao == 1:
+      # Opções relacionadas a pessoas
       exibir_menu_pessoa()
       opcao_pessoa = int(input('Opção: '))
       if opcao_pessoa == 1:
@@ -338,6 +354,7 @@ def menu_principal():
       else:
         print('Opção inválida!')
     elif opcao == 2:
+      # Opções relacionadas a livros
       exibir_menu_livros()
       opcao_livros = int(input('Opção: '))
       if opcao_livros == 1:
@@ -357,6 +374,7 @@ def menu_principal():
       else:
         print('Opção inválida!')
     elif opcao == 3:
+      # Opções relacionadas a empréstimos
       print('[ 1 ] Empréstimo de livro')
       print('[ 2 ] Devolução de livro')
       print('[ 3 ] Listar empréstimos')
@@ -376,6 +394,7 @@ def menu_principal():
       else:
         print('Opção inválida!')
     elif opcao == 4:
+      # Opções relacionadas a relatórios
       print('---Relatórios---')
       print('[ 1 ] Relatório de empréstimos')
       print('[ 2 ] Relatório de devoluções')
@@ -415,4 +434,5 @@ def menu_principal():
     else:
       print('Opção inválida!')
 
+# Executar o menu principal
 menu_principal()
