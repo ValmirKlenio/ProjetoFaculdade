@@ -170,7 +170,7 @@ def cadastro_livros():
         with open('livrosCadastrados.txt', 'a') as arq_l:
             for liv in livros:
                 print(liv)
-                id_livro, titulo, resumo, autor = liv['id_livro'], liv['titulo'], liv['resumo'], liv['autor']
+                id_livro, titulo, resumo, autor = liv['Id do livro'], liv['titulo'], liv['resumo'], liv['autor']
                 editora, ano_publicacao, edicao = liv['editora'], liv['ano_publicacao'], liv['edicao']
                 salva_l = f'{id_livro}, {resumo}, {autor}, {editora}, {ano_publicacao}, {edicao}, \n'
                 arq_l.write(salva_l)
