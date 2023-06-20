@@ -1,5 +1,5 @@
 # IMPORTANDO BIBLIOTECAS
-from datetime import datetime
+from datetime import date, time, datetime
 
 # Listas/Dicionários
 pessoas = []
@@ -18,6 +18,7 @@ def exibir_menu_bibliot():
     [ 5 ] Relatórios
     [ 6 ] Sair/Encerrar''')
 
+
 def exibir_menu_pessoa():
     print('''Escolha uma opção:
     [ 1 ] Cadastrar uma pessoa
@@ -28,195 +29,339 @@ def exibir_menu_pessoa():
     [ 6 ] Consultar (pelo nome, ou parte do nome, ou pelo CPF)
     [ 7 ] Sair/Encerrar''')
 
+
 # CADASTRANDO O USUÁRIO
 def cadastro_pessoa():
     nome = input('Nome: ')
     cpf = int(input('CPF: '))
-    if any(pessoa['cpf'] == cpf for pessoa in pessoas):
-        print('CPF já cadastrado!')
-        return
-
+    if cpf in pessoas:
+        while cpf in pessoas:
+            print('CPF já cadastrado!')
+            cpf = int(input('Digite outro CPF: '))
+            if cpf not in pessoas:
+                continue
     email = input('Email: ')
     pessoas.append({'nome': nome, 'cpf': cpf, 'email': email})
     print(pessoas)
-
     # arquivo de escrita
     with open('pessoasCadastradas.txt', 'a') as arq:
         for pes in pessoas:
             nome, cpf, email = pes['nome'], str(pes['cpf']), pes['email']
             salva = f'{nome}, {cpf}, {email}, \n'
             arq.write(salva)
-        print()
-
+            print()
     # arquivo de leitura
     with open('pessoasCadastradas.txt', 'r') as arq:
-        print(arq.readlines())
+        arq.readlines()
+        print(arq)
 
-    print('Pessoa cadastrada com sucesso!')
+    print('Pessoa casdastrada com sucesso!')
+
 
 # LISTA DE PESSOAS CADASTRADAS
 def listar_pessoa():
-    for pessoa in pessoas:
-        print(pessoa)
+    for p in pessoas:
+        nome, email, cpf = p
+        print(p)
+
 
 # BUSCANDO PESSOAS
 def buscar_pessoa():
     cpf = int(input('CPF: '))
-    for pessoa in pessoas:
-        if pessoa['cpf'] == cpf:
-            print(f'Pessoa com o CPF {cpf} está cadastrada no sistema!')
-            print(pessoa)
-            return
-    print(f'Pessoa com CPF {cpf} não encontrada')
+    for b in pessoas:
+        nome, email, cpf = b
+        print(b)
+        print(f'Pessoa com o CPF {cpf} está cadastrada no sistema!')
+    if cpf not in pessoas:
+        print(f'Pessoa com CPF {cpf} não encontrada')
+
 
 # REMOVER PESSOA
 def remover_pessoa():
     cpf = int(input('CPF: '))
-    for pessoa in pessoas:
-        if pessoa['cpf'] == cpf:
-            print(pessoa)
-            r = input('Deseja remover essa pessoa? (S/N) ')
-            if r.upper() == 'S':
-                pessoas.remove(pessoa)
-                print('Pessoa removida com sucesso!')
-                return
-    print(f'Pessoa com CPF {cpf} não encontrada.')
+    for rp in pessoas:
+        nome, email, cpf = rp
+        print(rp)
+        r = input('Deseja remover essa pessoa? ')
+        if r == 'Ss':
+            pessoas.remove(pessoas['nome': nome, 'cpf': cpf, 'email': email])
+        print('Pessoa removida com sucesso!')
+    if cpf not in pessoas:
+        print(f'Pessoa com CPF {cpf} não encontrada.')
+
 
 # ALTERAR PESSOA
 def alterar_pessoa():
     cpf = int(input('Digite o CPF que deseja alterar: '))
-    for pessoa in pessoas:
-        if pessoa['cpf'] == cpf:
-            print(pessoa)
-            alt = input('Deseja fazer a alteração desse cadastro? (S/N) ').upper()
-            if alt == 'S':
-                nome = input('Digite o novo nome: ')
-                email = input('Digite o novo email: ')
-                pessoa['nome'] = nome
-                pessoa['email'] = email
-                print('Cadastro alterado com sucesso!')
-                return
-    print(f'Pessoa com CPF {cpf} não encontrada.')
+    for at in pessoas:
+        nome, email, cpf = at
+        print(at)
+        alt = input('Deseja fazer a alteração desse cadastro? ').upper()
+        if alt == 'Ss':
+            pessoas.remove(pessoas['nome': nome, 'email': email, 'cpf': cpf])
+            print('Começando a alteração...')
+            nome = input('Novo nome: ')
+            email = input('Novo email: ')
+            cpf = int(input('Novo cpf: '))
+            pessoas.append({'nome': nome, 'email': email, 'cpf': cpf})
+    print('Alterações feitas com sucesso!')
+
 
 # CONSULTAR PESSOA
 def consulta_pessoa():
-    valor = input('Digite o nome, parte do nome ou CPF para consultar: ')
-    encontrado = False
-    for pessoa in pessoas:
-        if valor in pessoa['nome'] or str(valor) == str(pessoa['cpf']):
-            print(pessoa)
-            encontrado = True
-    if not encontrado:
-        print('Nenhum registro encontrado.')
+    print('''Escolha um tipo de consulta:
+    [ 1 ] Consultar pelo nome
+    [ 2 ] Consultar por parte do nome
+    [ 3 ] Consultar pelo CPF''')
+    consult = int(input('Por onde deseja consultar: '))
+    if consult == 1:
+      nome = input('Nome: ')
+      if nome in pessoas:
+          print(f'O nome {nome} se encontra no sistema!')
+      else:
+          print(f'O nome {nome} não se encontra no nosso sistema')
+    elif consult == 2:
+      parte_nome = input('Parte do nome que deseja consultar: ')
+      if parte_nome in pessoas:
+          posicao = pessoas.find(parte_nome)
+          print(f'A parte do nome {parte_nome} se encontra em {posicao}')
+      else:
+          print('Este nome não está cadastrado no nosso sistema! Tente novamente.')
+    elif consult == 3:
+      cpf = int(input('CPF: '))
+      if cpf in pessoas:
+          print(f'O CPF {cpf} se encontra no nosso sistema!')
+      else:
+          print('O CPF não se encontra no nosso sistema!')
+    else:
+        while consult < 1 and consult > 3:
+            consult = int(input('ERRO! Digite um número entre 1 e 3: '))
+    print()
+
+
+# MENU LIVROS
+def exibir_menu_livros():
+    print('''Escolha uma opção:
+    [ 1 ] Cadastrar um livro
+    [ 2 ] Listar os livros cadastrados
+    [ 3 ] Procurar os livros
+    [ 4 ] Remover
+    [ 5 ] Alterar
+    [ 6 ] Consultar (pelo título ou parte do título, pelo autor ou pela editora)
+    [ 7 ] Encerrar/Sair''')
+
 
 # CADASTRANDO LIVROS
 def cadastro_livros():
-    id_livro = input('ID do Livro: ')
-    if any(livro['id_livro'] == id_livro for livro in livros):
-        print('ID do livro já cadastrado!')
-        return
+    id_livro = int(input('Id: '))
+    if id_livro in livros:
+        print('Livro já cadastrado!')
+    else:
+        titulo = input('Título: ')
+        resumo = input('Resumo: ')
+        autor = input('Autor: ')
+        editora = input('Editora: ')
+        ano_publicacao = int(input('Ano de publicação: '))
+        edicao = int(input('Edição: '))
+        livros.append({'Id do Livro': id_livro, 'titulo': titulo, 'resumo': resumo, 'autor': autor,
+                       'editora': editora, 'ano de publicação': ano_publicacao, 'edição': edicao})
+        print(livros)
+        # arquivo de escrita
+        with open('livrosCadastrados.txt', 'a') as arq_l:
+            for liv in livros:
+                id_livro, titulo, resumo, autor = liv['Id do Livro'], liv['titulo'], liv['resumo'], liv['autor']
+                editora, ano_publicacao, edicao = liv['editora'], liv['ano de publicação'], liv['edição']
+                salva_l = f'{id_livro}, {resumo}, {autor}, {editora}, {ano_publicacao}, {edicao}, \n'
+                arq_l.write(salva_l)
+        # arquivo de leitura
+        with open('livrosCadastrados.txt', 'r') as arq_l:
+                arq_l.readlines()
+                print(arq_l)
+                print()
+        print('Livro cadastrado com sucesso!!')
 
-    titulo = input('Título: ')
-    resumo = input('Resumo: ')
-    autor = input('Autor: ')
-    editora = input('Editora: ')
-    ano_publicacao = input('Ano de Publicação: ')
-    edicao = input('Edição: ')
 
-    livros.append({
-        'id_livro': id_livro,
-        'titulo': titulo,
-        'resumo': resumo,
-        'autor': autor,
-        'editora': editora,
-        'ano_publicacao': ano_publicacao,
-        'edicao': edicao
-    })
-
-    print('Livro cadastrado com sucesso!')
-
-# LISTA DE LIVROS CADASTRADOS
+# LISTAR LIVROS CADASTRADOS
 def listar_livros():
     for livro in livros:
+        id_livro, titulo, resumo, autor, editora, ano_publicacao, edicao = livro
         print(livro)
+
 
 # BUSCANDO LIVROS
 def buscar_livros():
-    id_livro = input('ID do livro: ')
-    for livro in livros:
-        if livro['id_livro'] == id_livro:
-            print(f'Livro com o ID {id_livro} está cadastrado no sistema!')
-            print(livro)
-            return
-    print(f'Livro com ID {id_livro} não encontrado')
+    id_livro = int(input('Id: '))
+    for i_d in livros:
+        id_livro, titulo, resumo, autor, editora, ano_publicacao, edicao = i_d
+        print(i_d)
+        if id_livro == livros:
+            print(livros['id do livro': id_livro,'titulo': titulo, 'resumo': resumo,
+                  'autor': autor, 'editora': editora, 'ano de publicação': ano_publicacao, 'edição': edicao])
+    else:
+        print(f'Livro com id {id_livro} não foi encontrado')
+
+
+# REMOVER LIVROS
+def remover_livro():
+    id_livro = int(input('Id do Livro: '))
+    if id_livro in livros:
+        print(livros[id_livro])
+        rem = input('Deseja remover este livro? ')
+        if rem == 'Ss':
+            livros.remove(id_livro)
+        print("Livro removido com sucesso!")
+    else:
+        print(f'Livro com id {id_livro} não encontrado.')
+
+
+# ALTERAR PESSOA
+def alterar_livros():
+    id_livro = int(input('Digite o Id do livro que deseja alterar: '))
+    for ad in livros:
+        id_livro, titulo, resumo, autor, editora, ano_publicacao, edicao = ad
+        print(ad)
+        alterar_livro = input('Deseja fazer a alteração desse cadastro? ').upper()
+        if alterar_livro == 'Ss':
+            livros.remove(livros['id do livro': id_livro, 'titulo': titulo, 'resumo': resumo,
+                          'editora': editora, 'ano de publicação': ano_publicacao, 'edição': edicao])
+            print('ALTERANDO OS DADOS')
+            id_livro = int(input('Novo id: '))
+            titulo = str(input('Novo título: '))
+            resumo = input('Novo resumo: ')
+            autor = input('Novo(s) autor(res): ')
+            editora = str(input('Nova editora: '))
+            ano_publicacao = int(input('Novo ano de publicação: '))
+            edicao = int(input('Nova edição: '))
+            livros.append({'id do livro': id_livro, 'titulo': titulo, 'resumo': resumo,
+                          'editora': editora, 'ano de publicação': ano_publicacao, 'edição': edicao})
+    print('Alterações feitas com sucesso')
+
+
+# CONSULTAR LIVROS
+def consulta_livros():
+    print('''Escolha um tipo de consulta:
+          [ 1 ] Consultar pelo Id do Livro
+          [ 2 ] Consultar pelo Título
+          [ 3 ] Consultar por parte do Título
+          [ 4 ] Consultar pelo autor
+          [ 5 ] Consultar pela editora''')
+    consul = int(input('Por onde deseja consultar: '))
+    if consul == 1:
+        id_livro = int(input('Id: '))
+        if id_livro in livros:
+            print(livros)
+            print(f'O livro com o ID {id_livro} está cadastrado')
+        else:
+            print(f'O id {id_livro} não se encontra no sistema ou não está cadastrado')
+    elif consul == 2:
+        titulo = input('Título: ')
+        if titulo in livros:
+            print(livros)
+        else:
+            print(f'O Título {titulo} não se encontra no nosso sistema ou não está cadastrado')
+    elif consul == 3:
+        parte_titulo = input('Parte do título que deseja consultar: ')
+        if parte_titulo in livros:
+            pos = livros.find(parte_titulo)
+            print(f'A parte do Título {parte_titulo} se encontra em {pos}')
+        else:
+            print('Este Título não está cadastrado no nosso sistema! Tente novamente.')
+    elif consul == 4:
+        autor = input('Autor(es): ')
+        if autor in livros:
+            print(f'O(s) Autor(es) {autor} se encontra no nosso sistema!')
+        else:
+            print('O(s) Autor(es) não se encontra no nosso sistema ou não foi cadastrado!')
+    elif consul == 5:
+        editora = input('Editora: ')
+        if editora in livros:
+            print(f'A Editora {editora} se encontra no nosso sistema!')
+        else:
+            print('A Editora não se encontra no nosso sistema ou não foi cadastrada!')
+    else:
+        while consul < 1 and consul > 5:
+            consul = int(input('ERRO! Digite um número entre 1 e 5: '))
+    print()
+
 
 # EMPRÉSTIMO DE LIVROS
-def emprestimo_livros():
-    cpf = int(input('CPF do usuário: '))
-    id_livro = input('ID do livro: ')
-    data_emprestimo = datetime.now()
+def emprestimo():
+    # verificar se o livro está disponível
+    id_livro = int(input('Id: '))
+    if id_livro in emprest:
+        print('Livro já emprestado!')
+    else:
+        # fazer o empréstimo
+        if livros not in emprest:
+            id_livro = int(input('Id: '))
+            pessoa = input('Nome da pessoa: ')
+            titulo = input('Título do livro: ')
+            # registrar a data de saída do livro
+            hora_e_data = datetime.now()
+            print(f'Hora e Data do empréstimo: {hora_e_data}')
+            emprest.append({'Pessoa': pessoa, 'Id do livro': id_livro, 'titulo': titulo, 'hora/data': hora_e_data})
+        # arquivos do empréstimo
+        with open('livrosEmprestados.txt', 'a') as arq_e:
+            for e in livros:
+                id_livro, titulo, resumo, autor = e['Id do Livro'], e['titulo'], e['resumo'], e['autor']
+                editora, ano_publicacao, edicao = e['editora'], e['ano de publicação'], e['edição']
+                salva_e = f'{id_livro}, {resumo}, {autor}, {editora}, {ano_publicacao}, {edicao}, \n'
+                arq_e.write(salva_e)
+                if livros[e] in emprest:
+                    print('Livro não disponível para empréstimo.')
+            print()
+        # arquivo de leitura do empréstimo
+        with open('livrosEmprestados.txt', 'r') as arq_l:
+                print(arq_l.readlines())
+                print()
+        print('Empréstimo realizado com sucesso!')
 
-    pessoa = None
-    for p in pessoas:
-        if p['cpf'] == cpf:
-            pessoa = p
-            break
 
-    livro = None
-    for l in livros:
-        if l['id_livro'] == id_livro:
-            livro = l
-            break
+# LIVROS DISPONÍVEIS
+def livros_disponiveis():
+    for ld in livros:
+        if ld not in emprest:
+            print(f'Os livros disponíveis são {ld}')
+            print(ld)
 
-    if pessoa is None:
-        print(f'Usuário com CPF {cpf} não encontrado.')
-        return
 
-    if livro is None:
-        print(f'Livro com ID {id_livro} não encontrado.')
-        return
+# DEVOLUÇÃO DO LIVRO
+def devolucao():
+    # Verificar se o livro está emprestado e fazer a devolução
+    id_livro = int(input('Id do livro que deseja devolver: '))
+    for d in emprest:
+        id_livro, pessoa, titulo = d
+        print(d)
+        # tornar o livro disponível
+        opc_d = input('Deseja devolver esse livro? ').upper()
+        if opc_d == 'Ss':
+            emprest.remove({'ID do livro': id_livro, 'Título': titulo, 'Pessoa': pessoa})
+        # registrar a data de devolução
+        hora_e_data = datetime.now()
+        print(f'Hora e data da devolução: {hora_e_data}')
+        devol.append({'Id do livro': id_livro, 'Título': titulo, 'Pessoa': pessoa, 'Hora e data': hora_e_data})
+    # fazendo a leitura dos livros emprestados
+    with open('livrosEmprestados.txt', 'r') as arq_l:
+        for liv in livros:
+            arq_l.readlines(liv)
+            print(liv)
+            print()
+    # escrevendo no arquivo de livros devolvidos
+    with open('livrosDevolvidos.txt', 'a') as devolv_l:
+        for dev in emprest:
+            id_livro, titulo, resumo, autor = dev['Id do Livro'], dev['titulo'], dev['resumo'], dev['autor']
+            editora, ano_publicacao, edicao = dev['editora'], dev['ano de publicação'], dev['edição']
+            salva_d = f'{id_livro}, {resumo}, {autor}, {editora}, {ano_publicacao}, {edicao}, \n'
+            devolv_l.write(salva_d)
+            print()
+    print('Livro devolvido com sucesso!')
 
-    emprest.append({
-        'pessoa': pessoa,
-        'livro': livro,
-        'data_emprestimo': data_emprestimo
-    })
-
-    print('Empréstimo realizado com sucesso!')
-
-# DEVOLUÇÃO DE LIVROS
-def devolucao_livros():
-    cpf = int(input('CPF do usuário: '))
-    id_livro = input('ID do livro: ')
-    data_devolucao = datetime.now()
-
-    emprestimo = None
-    for em in emprest:
-        if em['pessoa']['cpf'] == cpf and em['livro']['id_livro'] == id_livro:
-            emprestimo = em
-            break
-
-    if emprestimo is None:
-        print('Empréstimo não encontrado.')
-        return
-
-    devol.append({
-        'pessoa': emprestimo['pessoa'],
-        'livro': emprestimo['livro'],
-        'data_emprestimo': emprestimo['data_emprestimo'],
-        'data_devolucao': data_devolucao
-    })
-
-    emprest.remove(emprestimo)
-
-    print('Devolução realizada com sucesso!')
 
 # RELATÓRIOS
-def relatorios():
-    print('1 - Livros mais emprestados')
-    print('2 - Livros emprestados')
-    print('3 - Livros devolvidos')
-
+def relatorio():
+    print('''Escolha a opção que deseja:
+    [ 1 ] Livros mais emprestados no mês
+    [ 2 ] Livros emprestados e não devolvidos''')
     opcao = int(input('Escolha uma opção: '))
 
     if opcao == 1:
@@ -243,9 +388,12 @@ def relatorios():
             print('Nenhum livro emprestado.')
             return
 
-        print('Livros emprestados:')
-        for em in emprest:
-            print(f"CPF: {em['pessoa']['cpf']}, ID: {em['livro']['id_livro']}, Data do empréstimo: {em['data_emprestimo']}")
+        for le in emprest:
+            id_livro, titulo, resumo, autor, editora, ano_publicacao = le
+            print('Os livros emprestados são:')
+            print()
+            print(le)
+            print()
 
     elif opcao == 3:
         if not devol:
@@ -254,53 +402,150 @@ def relatorios():
 
         print('Livros devolvidos:')
         for dev in devol:
-            print(f"CPF: {dev['pessoa']['cpf']}, ID: {dev['livro']['id_livro']}, Data do empréstimo: {dev['data_emprestimo']}, Data da devolução: {dev['data_devolucao']}")
+            id_livro, pessoa, titulo = dev
+            print('Os livros devolvidos são:')
+            print()
+            print(dev)
+        
+            
+            
+            
+    elif opc_relatorio == 3:
+        livros_mais_emprestados = sorted(emprest, key=lambda x: x[1], reverse=True)
+        # Obtenha os 10 livros mais emprestados no mês
+        top_10_emprestados = livros_mais_emprestados[:10]
+        # Imprima a lista dos 10 livros mais emprestados no mês
+        print("Lista dos 10 livros mais emprestados no mês:")
+        for livro, quantidade in top_10_emprestados:
+            print(f"{livro}: {quantidade} retiradas")
 
-    else:
-        print('Opção inválida.')
 
-# PROGRAMA PRINCIPAL
-while True:
-    exibir_menu_bibliot()
-    opcao = int(input('Escolha uma opção: '))
+print('-*' * 20)
+print('BEM VINDO AO SISTEMA DE BIBLIOTECA')
+print('-*' * 20)
+print()
 
-    if opcao == 1:
-        while True:
+
+def menu_principal():
+    while True:
+        exibir_menu_bibliot()
+        print()
+        opcao = int(input('Opção: '))
+        if opcao == 1:
             exibir_menu_pessoa()
-            opcao_pessoa = int(input('Escolha uma opção: '))
-
+        # CADASTRO DE PESSOAS
+            opcao_pessoa = int(input('Opção: '))
             if opcao_pessoa == 1:
+                print('-*' * 20)
+                print('...::: Cadastro de Pessoas :::...')
                 cadastro_pessoa()
+                print('-*' * 20)
+                print()
             elif opcao_pessoa == 2:
+                print('-*' * 20)
+                print('...::: Lista de Pessoas Cadastradas :::...')
                 listar_pessoa()
+                print('-*' * 20)
+                print()
             elif opcao_pessoa == 3:
+                print('-*' * 20)
+                print('...::: Buscar Pessoa Cadastradas :::...')
                 buscar_pessoa()
+                print('-*' * 20)
+                print()
             elif opcao_pessoa == 4:
+                print('-*' * 20)
+                print('...::: Remover Pessoa Cadastradas :::...')
                 remover_pessoa()
+                print('-*' * 20)
+                print()
             elif opcao_pessoa == 5:
+                print('-*' * 20)
+                print('...::: Alterar Dados de Pessoas Cadastradas :::...')
                 alterar_pessoa()
+                print('-*' * 20)
+                print()
             elif opcao_pessoa == 6:
+                print('-*' * 20)
+                print('...::: Consultar Pessoas Cadastradas :::...')
                 consulta_pessoa()
+                print('-*' * 20)
+                print()
             elif opcao_pessoa == 7:
+                print('...::: ENCERRANDO :::...')
+                print()
                 break
             else:
                 print('Opção inválida!')
+        # CADASTRO DE LIVROS
+        elif opcao == 2:
+            exibir_menu_livros()
+            opcao_livros = int(input('Opção: '))
+            if opcao_livros == 1:
+                print('-*' * 20)
+                print('...::: Cadastro de Livros :::...')
+                cadastro_livros()
+                print('-*' * 20)
+                print()
+            elif opcao_livros == 2:
+                print('-*' * 20)
+                print('...::: Listar Livros Cadastrados :::...')
+                listar_livros()
+                print('-*' * 20)
+                print()
+            elif opcao_livros == 3:
+                print('-*' * 20)
+                print('...::: Buscar Livros Cadastrados :::...')
+                buscar_livros()
+                print('-*' * 20)
+                print()
+            elif opcao_livros == 4:
+                print('-*' * 20)
+                print('...::: Remover Livros Cadastrados :::...')
+                remover_livro()
+                print('-*' * 20)
+                print()
+            elif opcao_livros == 5:
+                print('-*' * 20)
+                print('...::: Alterar Livros Cadastrados :::...')
+                alterar_livros()
+                print('-*' * 20)
+                print()
+            elif opcao_livros == 6:
+                print('-*' * 20)
+                print('...::: Consultar Livros Cadastrados :::...')
+                consulta_livros()
+                print('-*' * 20)
+                print()
+            elif opcao_livros == 7:
+                print('...::: ENCERRANDO :::...')
+                print()
+                break
+            else:
+                print('Opção inválida!')
+        elif opcao == 3:
+            print('-*' * 20)
+            print('...::: Empréstimo :::...')
+            emprestimo()
+            print('-*' * 20)
+            print()
+        # devolução
+        elif opcao == 4:
+            print('-*' * 20)
+            print('...::: Devolução de Livros :::...')
+            devolucao()
+            print('-*' * 20)
+        # relatório
+        elif opcao == 5:
+            print('-*' * 20)
+            print('...::: Relatótios :::...')
+            relatorio()
+            print('-*' * 20)
+        # encerrando
+        elif opcao == 6:
+            print('-*' * 20)
+            print('...::: ENCERRANDO :::...')
+            print('-*' * 20)
+            break
 
-    elif opcao == 2:
-        cadastro_livros()
-
-    elif opcao == 3:
-        emprestimo_livros()
-
-    elif opcao == 4:
-        devolucao_livros()
-
-    elif opcao == 5:
-        relatorios()
-
-    elif opcao == 6:
-        print('Encerrando o programa...')
-        break
-
-    else:
-        print('Opção inválida!')
+menu_principal()
