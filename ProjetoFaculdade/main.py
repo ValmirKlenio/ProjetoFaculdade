@@ -72,7 +72,7 @@ def buscar_pessoa():
         nome, email, cpf = b
         print(b)
         print(f'Pessoa com o CPF {cpf} está cadastrada no sistema!')
-    if cpf not in pessoas:
+    if b not in pessoas:
         print(f'Pessoa com CPF {cpf} não encontrada')
 
 
@@ -197,8 +197,8 @@ def buscar_livros():
         if id_livro == livros:
             print(livros['id do livro': id_livro,'titulo': titulo, 'resumo': resumo,
                   'autor': autor, 'editora': editora, 'ano de publicação': ano_publicacao, 'edição': edicao])
-    else:
-        print(f'Livro com id {id_livro} não foi encontrado')
+        else:
+            print(f'Livro com id {id_livro} não foi encontrado')
 
 
 # REMOVER LIVROS
@@ -221,7 +221,7 @@ def alterar_livros():
         id_livro, titulo, resumo, autor, editora, ano_publicacao, edicao = ad
         print(ad)
         alterar_livro = input('Deseja fazer a alteração desse cadastro? ').upper()
-        if alterar_livro == 'Ss':
+        if alterar_livro == 'Ss' and alterar_livro == 'Sim' and alterar_livro == 'sim' and alterar_livro == 's':
             livros.remove(livros['id do livro': id_livro, 'titulo': titulo, 'resumo': resumo,
                           'editora': editora, 'ano de publicação': ano_publicacao, 'edição': edicao])
             print('ALTERANDO OS DADOS')
