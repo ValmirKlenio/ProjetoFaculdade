@@ -250,7 +250,7 @@ def consulta_livros():
         id_livro = int(input('Id: '))
         if id_livro in livros:
             print(livros)
-            print(f'O livro com o ID {id_livro} está cadastrado')
+            print(f'O livro com o  ID {id_livro} está cadastrado')
         else:
             print(f'O id {id_livro} não se encontra no sistema ou não está cadastrado')
     elif consul == 2:
